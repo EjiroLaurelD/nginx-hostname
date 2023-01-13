@@ -1,0 +1,13 @@
+---
+
+app_user: "www-data"
+repo_name: "hostname-proj"
+http_host: "54.197.90.2"
+http_conf: "54.197.90.2.conf"
+www_host: "www.54.197.90.2"
+php_repo: "ppa:ondrej/php"
+domain: "ejirolaureld.me"
+domain_alias: "www.ejirolaureld.me"
+ssl_email: "{{ vault_ssl_email }}"
+
+disable_default: true

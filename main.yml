@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+          - name: install prerequisite
+            apt: name={{ item }} state=latest force_apt_get=yes update_cache=true
+            loop: ['aptitude']
+  vars_files:
+          - vars/var.yml          
+  roles:
+          - base
+          - nginx
+          - php
+          - firewall
+          - ssl
+  handlers:
+          - name: restart nginx
+            become: true
+            service:
+                    name: nginx
+                    state: restarted
+          
+                    

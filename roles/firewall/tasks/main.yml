@@ -1,0 +1,22 @@
+---
+- name: Allow Nginx
+  ufw:
+          rule: allow
+          name: '{{ item }}'
+  loop:
+          - OpenSSH
+          - Nginx Full
+  tags: firewall
+
+- name: deny nginx http
+  ufw:
+          rule: delete
+          name: "{{ item }}"
+  loop:
+          - Nginx HTTP
+  tags: firewall
+
+  name: enable ufw
+  ufw:
+          state: enabled
+  tags: firewall

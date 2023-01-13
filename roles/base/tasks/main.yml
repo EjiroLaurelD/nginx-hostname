@@ -1,0 +1,14 @@
+---
+- name: install git and ufw
+  become: true
+  apt:
+          name:
+                  - git
+                  - ufw
+          state: present
+ 
+- name: ensure ufw is running
+  service:
+          name: ufw
+          state: started
+

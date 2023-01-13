@@ -1,0 +1,12 @@
+---
+- name: Install certbot
+  apt:
+          name: python3-certbot-nginx
+          state: present
+  tags: ssl
+
+- name: Install free ssl, configure and redirect to https then restart the nginx server
+  shell: certbot --nginx --agree-tos --redirect -m '{{ ssl_email }}' -d '{{ domain }}'
+  args:
+          creates: /etc/nginx/sites-available/ "{{ http_conf }}"
+  tags: ssl

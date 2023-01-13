@@ -1,0 +1,47 @@
+---
+
+- name: Install Nginx
+  apt:
+          name: nginx
+          state: latest
+  tags: nginx
+
+
+- name: create www document root directory
+  become: true
+  file:
+          path: "/var/www/{{ http_host }}"
+          state: directory
+          mode: '0775'
+          owner: "{{ app_user }}"
+          group: "{{ app_user }}"
+          recurse: yes
+  tags: nginx
+
+- name: copy index.php to site
+  template:
+          src: index.php
+          dest: "/var/www/{{ http_host }}"
+          mode: '0755'
+          owner: "{{ app_user }}"
+          group: "{{ app_user }}"
+  tags: nginx
+
+- name: copy nginx site.conf
+  template:
+          src: site.conf
+          dest: /etc/nginx/sites-available/
+          owner: root
+          group: root
+          mode: '0644'
+
+- name: enable new conf
+  become: true
+  shell: ln -s /etc/nginx/sites-available/site.conf /etc/nginx/sites-enabled/
+
+- name: unlink default
+  become: true
+  shell: unlink /etc/nginx/sites-enabled/default
+  notify:
+          - nginx service started
+          - nginx service enabled 
